@@ -9,7 +9,7 @@ import {
 } from "../controllers/articlesController";
 import {authenticatedUser} from "../helpers/helper";
 import {getAllMessages, removeMessage, saveMessages, updateMessageStatus} from "../controllers/blog_messages";
-import {createComments, getComments} from "../controllers/comments_controller";
+import {createComments, getComments, removeComment} from "../controllers/comments_controller";
 
 const router = express.Router()
 export const getUser = router.get('/getUser', authenticatedUser, getUsers)
@@ -35,3 +35,4 @@ export const updateContactMessage = router.put("/contact/updateMessage/:id", aut
 //Comments
 export const saveComment = router.post("/comments/createComments", createComments)
 export const retrieveAllComments = router.get("/comments/retrieveAllComments", getComments)
+export const removeComments = router.delete("/comments/removeComment/:id", authenticatedUser, removeComment)
