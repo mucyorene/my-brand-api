@@ -1,5 +1,12 @@
 import express, {request} from "express";
-import {createMessage, deleteMessage, existingMessage, getMessages} from "../models/message_model";
+import {
+    createMessage,
+    deleteMessage,
+    existingMessage,
+    getMessages,
+    getSingleMessage,
+    updateStatus
+} from "../models/message_model";
 
 export const saveMessages = async (req: express.Request, res: express.Response) => {
     try {
@@ -38,16 +45,39 @@ export const getAllMessages = async (req: express.Request, res: express.Response
 export const removeMessage = async (req: express.Request, res: express.Response) => {
     try {
         const id = req.params.id
-        const deleteM = await deleteMessage(id);
-        if (!deleteM) {
+        const findMessage = await getSingleMessage(id);
+        if (!findMessage) {
             res.status(400).json({
                 "status": 400,
                 "message": "Message not found!",
             })
         }
+        const deleteM = await deleteMessage(id);
         res.status(200).json({"success": true, "messages": "Message deleted successfully"})
     } catch (error: any) {
         console.log(`HERE IS BLOG Delete message ERROR: ${error}`)
+        res.status(400).json({
+            status: 400,
+            message: error.message.toString(),
+        });
+    }
+}
+
+export const updateMessageStatus = async (req: express.Request, res: express.Response) => {
+    try {
+        const id = req.params.id
+        const {status} = req.body;
+        const findMessage = await getSingleMessage(id);
+        if (!findMessage) {
+            res.status(400).json({
+                "status": 400,
+                "message": "Message not found!",
+            })
+        }
+        const update = await updateStatus(id, {status})
+        res.status(200).json({"success": true, "messages": "Message status updated successfully"})
+    } catch (error: any) {
+        console.log(`HERE IS BLOG Update message ERROR: ${error}`)
         res.status(400).json({
             status: 400,
             message: error.message.toString(),

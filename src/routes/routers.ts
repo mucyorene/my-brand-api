@@ -8,7 +8,7 @@ import {
     updateArticle
 } from "../controllers/articlesController";
 import {authenticatedUser} from "../helpers/helper";
-import {getAllMessages, removeMessage, saveMessages} from "../controllers/blog_messages";
+import {getAllMessages, removeMessage, saveMessages, updateMessageStatus} from "../controllers/blog_messages";
 
 const router = express.Router()
 export const getUser = router.get('/getUser', authenticatedUser, getUsers)
@@ -29,3 +29,4 @@ export const editArticle = router.put("/articles/editBlogArticle/:id", authentic
 export const sendMessage = router.post("/contact/sendMessage", saveMessages)
 export const getContactMessages = router.get("/contact/getMessages", authenticatedUser, getAllMessages)
 export const removeContactMessage = router.get("/removeContactMessage/:id", authenticatedUser, removeMessage)
+export const updateContactMessage = router.put("/contact/updateMessage/:id", authenticatedUser, updateMessageStatus)
