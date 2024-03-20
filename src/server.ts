@@ -19,7 +19,7 @@ import {
     getContactMessages,
     removeContactMessage,
     updateContactMessage,
-    saveComment, retrieveAllComments
+    saveComment, retrieveAllComments, removeComments
 } from "./routes/routers";
 import {connection} from "./db/connection";
 
@@ -46,4 +46,4 @@ app.listen(8080, () => {
     console.log(`APP IS RUNNING ON : 8080: http://localhost:8080/`)
 })
 app.use(getUser, registerUser, loginUser, createNewArticle, getAllBlogArticles,
-    remoteSingleArticle, removeUserRoute, retrieveUser, getSingleBlogArticle, editArticle, editBlogUser, getContactMessages, removeContactMessage, updateContactMessage, saveComment, retrieveAllComments)
+    remoteSingleArticle, removeUserRoute, retrieveUser, getSingleBlogArticle, editArticle, editBlogUser, getContactMessages, removeContactMessage, updateContactMessage, saveComment, retrieveAllComments, removeComments)
