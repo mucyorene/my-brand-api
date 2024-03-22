@@ -8,6 +8,8 @@ import {
     updateArticle
 } from "../controllers/articlesController";
 import {authenticatedUser} from "../helpers/helper";
+import {getAllMessages, removeMessage, saveMessages, updateMessageStatus} from "../controllers/blog_messages";
+import {createComments, getComments, removeComment} from "../controllers/comments_controller";
 
 const router = express.Router()
 export const getUser = router.get('/getUser', authenticatedUser, getUsers)
@@ -23,3 +25,14 @@ export const getAllBlogArticles = router.get("/articles/getBlogs", getArticles)
 export const getSingleBlogArticle = router.get("/articles/getSingleArticle/:id", getSingleBlog)
 export const remoteSingleArticle = router.delete("/articles/removeSingleArticle/:id", authenticatedUser, remoteSingleArticles)
 export const editArticle = router.put("/articles/editBlogArticle/:id", authenticatedUser, updateArticle)
+
+//Contact messages
+export const sendMessage = router.post("/contact/sendMessage", saveMessages)
+export const getContactMessages = router.get("/contact/getMessages", authenticatedUser, getAllMessages)
+export const removeContactMessage = router.get("/removeContactMessage/:id", authenticatedUser, removeMessage)
+export const updateContactMessage = router.put("/contact/updateMessage/:id", authenticatedUser, updateMessageStatus)
+
+//Comments
+export const saveComment = router.post("/comments/createComments", createComments)
+export const retrieveAllComments = router.get("/comments/retrieveAllComments", getComments)
+export const removeComments = router.delete("/comments/removeComment/:id", authenticatedUser, removeComment)

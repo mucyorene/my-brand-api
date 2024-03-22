@@ -1,4 +1,4 @@
-import express, {Application} from "express";
+import express, {Application, Express} from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import compression from "compression";
@@ -10,11 +10,20 @@ import {
     getUser,
     loginUser,
     registerUser,
-    remoteSingleArticle, removeUserRoute,
+    remoteSingleArticle,
+    removeUserRoute,
     retrieveUser,
-    getSingleBlogArticle, editArticle, editBlogUser
+    getSingleBlogArticle,
+    editArticle,
+    editBlogUser,
+    getContactMessages,
+    removeContactMessage,
+    updateContactMessage,
+    saveComment, retrieveAllComments, removeComments
 } from "./routes/routers";
 import {connection} from "./db/connection";
+import swaggerDoc from "./utils/swagger";
+import {App} from "supertest/types";
 
 dotenv.config()
 const app: Application = express();
@@ -34,9 +43,11 @@ app.use(
         extended: true,
     })
 );
-app.listen(8080, () => {
-    connection()
+app.use(getUser, registerUser, loginUser, createNewArticle, getAllBlogArticles,
+    remoteSingleArticle, removeUserRoute, retrieveUser, getSingleBlogArticle, editArticle, editBlogUser, getContactMessages, removeContactMessage, updateContactMessage, saveComment, retrieveAllComments, removeComments)
+export const servers = app.listen(8080, () => {
+    connection();
+    // swaggerDoc(app, 8080);
     console.log(`APP IS RUNNING ON : 8080: http://localhost:8080/`)
 })
-app.use(getUser, registerUser, loginUser, createNewArticle, getAllBlogArticles,
-    remoteSingleArticle, removeUserRoute, retrieveUser, getSingleBlogArticle, editArticle, editBlogUser)
+export default app
