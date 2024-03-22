@@ -50,7 +50,7 @@ app.use(getUser, registerUser, loginUser, createNewArticle, getAllBlogArticles,
     remoteSingleArticle, removeUserRoute, retrieveUser, getSingleBlogArticle, editArticle, editBlogUser, getContactMessages, removeContactMessage, updateContactMessage, saveComment, retrieveAllComments, removeComments)
 export const servers = app.listen(8080, () => {
     connection();
-    swaggerDoc(app, 8080);
+    // swaggerDoc(app, 8080);
     console.log(`APP IS RUNNING ON : 8080: http://localhost:8080/`)
 })
 export default app
