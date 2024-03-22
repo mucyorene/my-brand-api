@@ -39,6 +39,18 @@ export const createBlogArticle = async (req: express.Request, res: express.Respo
 }
 
 export const getArticles = async (req: express.Request, res: express.Response) => {
+    /**
+     * @openapi
+     * /articles/getBlogs
+     *  get:
+     *     tag:
+     *       - Get all articles
+     *       description: This provide all articles as response
+     *       responses:
+     *          200:
+     *             description: Articles founds,
+     *
+     * */
     try {
         const articles = await allBlogs();
         res.status(200).json({"success": true, "articles": articles})
