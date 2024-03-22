@@ -26,7 +26,7 @@ import swaggerDoc from "./utils/swagger";
 import {App} from "supertest/types";
 
 dotenv.config()
-const app: Express = express();
+const app: Application = express();
 
 app.use(compression());
 app.use(cookieParser());
