@@ -1,29 +1,13 @@
-import express, {Application, Express} from "express";
+import express, {Application} from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import compression from "compression";
 import cors from "cors";
 import dotenv from "dotenv";
-import {
-    createNewArticle,
-    getAllBlogArticles,
-    getUser,
-    loginUser,
-    registerUser,
-    remoteSingleArticle,
-    removeUserRoute,
-    retrieveUser,
-    getSingleBlogArticle,
-    editArticle,
-    editBlogUser,
-    getContactMessages,
-    removeContactMessage,
-    updateContactMessage,
-    saveComment, retrieveAllComments, removeComments
-} from "./routes/routers";
+import swaggerUi from "swagger-ui-express";
 import {connection} from "./db/connection";
-import swaggerDoc from "./utils/swagger";
-import {App} from "supertest/types";
+import routers from "./routes/routers";
+import swaggerSpec from "./utils/swagger";
 
 dotenv.config()
 const app: Application = express();
@@ -43,8 +27,8 @@ app.use(
         extended: true,
     })
 );
-app.use(getUser, registerUser, loginUser, createNewArticle, getAllBlogArticles,
-    remoteSingleArticle, removeUserRoute, retrieveUser, getSingleBlogArticle, editArticle, editBlogUser, getContactMessages, removeContactMessage, updateContactMessage, saveComment, retrieveAllComments, removeComments)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(routers)
 export const servers = app.listen(8080, () => {
     connection();
     // swaggerDoc(app, 8080);

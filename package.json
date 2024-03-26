@@ -9,7 +9,9 @@
     "start": "nodemon",
     "dev": "npx nodemon",
     "test": "jest --detectOpenHandles",
-    "test:watch": "jest --detectOpenHandles --watch  --coverage"
+    "test:watch": "jest --detectOpenHandles --watch  --coverage",
+    "swagger": "tsoa spec",
+    "generate-swagger": "swagger-jsdoc -d src/utils/swagger.ts -o src/utils/swagger.json"
   },
   "keywords": [],
   "author": "",
@@ -51,6 +53,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.2.1",
     "nodemon": "^3.1.0",
+    "swagger-autogen": "^2.23.7",
     "swagger-jsdoc": "^6.2.8",
     "ts-node": "^10.9.2"
   },

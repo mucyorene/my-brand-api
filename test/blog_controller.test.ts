@@ -12,7 +12,6 @@ jest.setTimeout(30000);
 const request = supertest(app);
 
 const articlesId = new mongoose.Types.ObjectId;
-console.log(articlesId)
 const MONGO_URL: string = process.env.MONGO_URL!;
 beforeAll(async () => {
     await ArticleModel.create({
@@ -52,7 +51,7 @@ describe("GET /articles/getSingleArticle/:id", () => {
         console.log(articlesId)
         const res = await request.get(`/articles/getSingleArticle/${articlesId}`);
         expect(res.statusCode).toBe(200);
-        expect(res.body).toHaveProperty("title", "Lorem test article");
+        expect(res.body.article).toHaveProperty("title", "Lorem test article");
     });
 });
 

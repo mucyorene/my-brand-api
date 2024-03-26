@@ -2,7 +2,64 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
 import {createUser, editUserModel, getUserByEmail, getUserById, removeUser, users} from "../models/user_model"
-import {updateArticle} from "./articlesController";
+
+/**
+ * @swagger
+ * tags:
+ *   name: User
+ *   description: Operations related to users
+ */
+
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               names:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             required:
+ *               - names
+ *               - email
+ *               - password
+ *     responses:
+ *       '201':
+ *         description: User created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 201
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: User created successfully
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     names:
+ *                       type: string
+ *                       example: Rene MUCYO
+ *                     email:
+ *                       type: string
+ *                       example: johndoe@example.com
+ */
 
 export const register = async (req: express.Request, res: express.Response,) => {
     try {
@@ -41,6 +98,65 @@ export const register = async (req: express.Request, res: express.Response,) => 
     }
 }
 
+/**
+ * @swagger
+ * /auth/edit/{id}:
+ *   put:
+ *     summary: Update user information
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: User ID
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               names:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             required:
+ *               - names
+ *               - email
+ *               - password
+ *     responses:
+ *       '201':
+ *         description: User information updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 201
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: User information updated successfully
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     names:
+ *                       type: string
+ *                       example: John Doe
+ *                     email:
+ *                       type: string
+ *                       example: johndoe@example.com
+ */
 export const updateUser = async (req: express.Request, res: express.Response) => {
     try {
         const {id} = req.params
@@ -71,6 +187,76 @@ export const updateUser = async (req: express.Request, res: express.Response) =>
         });
     }
 }
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Login to the application
+ *     tags: [User]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             required:
+ *               - email
+ *               - password
+ *     responses:
+ *       '200':
+ *         description: Logged in successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 200
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Logged in successfully
+ *                 token:
+ *                   type: string
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *       '400':
+ *         description: Invalid request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 400
+ *                 message:
+ *                   type: string
+ *                   example: You're missing email or password
+ *       '404':
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 404
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: User not found
+ */
 export const login = async (req: express.Request, res: express.Response) => {
     try {
         const {email, password} = req.body;
@@ -118,7 +304,21 @@ export const login = async (req: express.Request, res: express.Response) => {
         console.log(`HERE IS LOGIN ERROR: ${error.message}`)
     }
 }
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Get all users
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     description: Retrieve a list of all users
+ *     responses:
+ *       '200':
+ *         description: A successful response with the list of users
+ */
 export const getUsers = async (req: express.Request, res: express.Response) => {
+
     try {
         const userInfo = await users();
         res.status(200).json({"success": true, "userInfo": userInfo})
@@ -130,6 +330,62 @@ export const getUsers = async (req: express.Request, res: express.Response) => {
         });
     }
 }
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Get a single user by ID
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: User ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: User found successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: User found successfully
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: 12345
+ *                     names:
+ *                       type: string
+ *                       example: John Doe
+ *                     email:
+ *                       type: string
+ *                       example: johndoe@example.com
+ *       '400':
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 400
+ *                 message:
+ *                   type: string
+ *                   example: User not found
+ */
 export const retrieveSingleUser = async (req: express.Request, res: express.Response) => {
     try {
         const id = req.params.id
@@ -150,6 +406,51 @@ export const retrieveSingleUser = async (req: express.Request, res: express.Resp
         });
     }
 }
+
+/**
+ * @swagger
+ * /removeUser/{id}:
+ *   delete:
+ *     summary: Delete a user by ID
+ *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: User ID
+ *         schema:
+ *           type: string
+ *           example: "1234567890"  # Example user ID
+ *     responses:
+ *       '200':
+ *         description: User deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: User deleted successfully
+ *       '400':
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 400
+ *                 message:
+ *                   type: string
+ *                   example: User not found
+ */
 export const deleteUser = async (req: express.Request, res: express.Response) => {
     try {
         const {id} = req.params;

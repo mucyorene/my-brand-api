@@ -1,54 +1,68 @@
-import express, {Express,} from "express";
-import swaggerUI from "swagger-ui-express"
 import swaggerJsDoc from "swagger-jsdoc"
 import {version} from "../../package.json"
-import * as http from "http";
+import swaggerJsdoc from "swagger-jsdoc"
 
 const options: swaggerJsDoc.Options = {
     definition: {
-        openApi: "1.0.0",
+        openapi: '3.0.0',
         info: {
             title: "My brand API - Documentation",
             version,
             description: 'Description of my API here',
-            termsOfService: 'https://mysite.com/terms',
             contact: {
                 name: 'Rene MUCYO',
                 email: 'renemucyo1@gmail.com',
                 url: 'https://mucyorene.github.io/my-brand/',
             },
-            license: {
-                name: 'Apache 2.0',
-                url: 'https://www.apache.org/licenses/LICENSE-2.0.html',
-            },
         },
-        components: {
-            securitySchemas: {
-                bearerAuth: {
-                    type: http,
-                    scheme: "bearer",
-                    bearerFormat: "JWT"
-                },
-            },
-        },
-        security: [
+        host: "localhost:8080",
+        servers: [
             {
-                bearerAuth: []
+                url: 'http://localhost:8080',
+                description: 'My-brand server'
+            },
+        ],
+        tags: [],
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                }
+            },
+            schemas: {
+                UpdateEmployeeRequest: {
+                    type: 'object',
+                    properties: {
+                        id: 0,
+                        name: 'string'
+                    }
+                }
             }
-        ]
+        },
     },
-    apis: ['./src/routes/routers.ts', './src/models/*.ts', './dist/*.js']
+    apis: ['./src/routes/*.ts', "./src/controllers/*.ts", './src/models/*.ts', './dist/*.js']
 };
-const swaggerSpec = swaggerJsDoc(options)
 
-function swaggerDoc(app: express.Application, port: number) {
-    //Swagger page
-    app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec))
-    //Docs in JSON Format
-    app.get('docs.json', (req: express.Request, res: express.Response) => {
-        res.setHeader('content-Type', 'application/json')
-        res.send(swaggerSpec)
-    });
-}
 
-export default swaggerDoc
+const swaggerSpec = swaggerJsdoc(options);
+export default swaggerSpec
+
+//
+// const outputFile = './swagger_output.json';
+// const endpointsFiles = ['./src/routes/routers.ts'];
+//
+// swaggerAutogen({openapi: '3.0.0'})(outputFile, endpointsFiles, options);
+
+
+// function swaggerDoc(app: express.Application, port: number) {
+//     //Swagger page
+//     app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec))
+//     //Docs in JSON Format
+//     app.get('docs.json', (req: express.Request, res: express.Response) => {
+//         res.setHeader('content-Type', 'application/json')
+//         res.send(swaggerSpec)
+//     });
+// }
+//
+// export default swaggerDoc
