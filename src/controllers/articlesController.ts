@@ -30,13 +30,13 @@ import {
  *             properties:
  *               title:
  *                 type: string
- *                 description: The title of the blog article
+ *                 example: The title of the blog article
  *               body:
  *                 type: string
- *                 description: The content/body of the blog article
+ *                 example: The content/body of the blog article
  *               thumbnail:
  *                 type: string
- *                 description: URL of the article's thumbnail image (optional)
+ *                 example: No image yet
  *     responses:
  *       '201':
  *         description: Successful creation of a new blog article
@@ -119,22 +119,41 @@ export const createBlogArticle = async (req: express.Request, res: express.Respo
         });
     }
 }
+
+
 /**
  * @swagger
- * tag:
- *   name:Articles
- * /articles/getBlogs:
+ * /articles:
  *   get:
  *     summary: Get all articles
  *     tags: [Blog Articles]
- *     description: Retrieve a list of all articles
  *     responses:
  *       '200':
- *         description: A successful response with the list of users
- *       '500':
- *          description: Internal server error
- *     examples:
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 articles:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 1
+ *                       title:
+ *                         type: string
+ *                         example: "Article one"
+ *                       content:
+ *                         type: string
+ *                         example: "This is a sample article content."
  */
+
 export const getArticles = async (req: express.Request, res: express.Response) => {
     try {
         const articles = await allBlogs();
@@ -147,6 +166,51 @@ export const getArticles = async (req: express.Request, res: express.Response) =
         });
     }
 }
+
+
+/**
+ * @swagger
+ * /articles/removeSingleArticle/{id}:
+ *   delete:
+ *     summary: Delete a single article by ID
+ *     tags: [Blog Articles]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Article ID
+ *         schema:
+ *           type: string
+ *           example: "1234567890"  # Example article ID
+ *     responses:
+ *       '200':
+ *         description: Article deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: Article removed successfully
+ *       '400':
+ *         description: Article not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 400
+ *                 message:
+ *                   type: string
+ *                   example: Article not found !
+ */
+
 export const remoteSingleArticles = async (req: express.Request, res: express.Response) => {
     try {
         const {id} = req.params
@@ -168,6 +232,61 @@ export const remoteSingleArticles = async (req: express.Request, res: express.Re
     }
 }
 
+
+/**
+ * @swagger
+ * /articles/getSingleArticle/{id}:
+ *   get:
+ *     summary: Get a single blog by ID
+ *     tags: [Blog Articles]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Blog ID
+ *         schema:
+ *           type: string
+ *           example: "1234567890"  # Example blog ID
+ *     responses:
+ *       '200':
+ *         description: Blog found successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: Article found
+ *                 article:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "1234567890"  # Example article ID
+ *                     title:
+ *                       type: string
+ *                       example: "Sample Blog"
+ *                     content:
+ *                       type: string
+ *                       example: "This is a sample blog content."
+ *       '400':
+ *         description: Blog not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 400
+ *                 message:
+ *                   type: string
+ *                   example: Article not found
+ */
 export const getSingleBlog = async (req: express.Request, res: express.Response) => {
     try {
         const {id} = req.params
@@ -182,6 +301,73 @@ export const getSingleBlog = async (req: express.Request, res: express.Response)
     }
 }
 
+/**
+ * @swagger
+ * /articles/editBlogArticle/{id}:
+ *   put:
+ *     summary: Update an article by ID
+ *     tags: [Blog Articles]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Article ID
+ *         schema:
+ *           type: string
+ *           example: "1234567890"  # Example article ID
+ *       - in: body
+ *         name: body
+ *         description: Updated article data
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             title:
+ *               type: string
+ *               example: "Updated Title"
+ *             body:
+ *               type: string
+ *               example: "Updated content of the article"
+ *     responses:
+ *       '200':
+ *         description: Article updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: Article updated Successfully
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       example: "1234567890"  # Example article ID
+ *                     title:
+ *                       type: string
+ *                       example: "Updated Title"
+ *                     body:
+ *                       type: string
+ *                       example: "Updated content of the article"
+ *       '400':
+ *         description: Article not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 400
+ *                 message:
+ *                   type: string
+ *                   example: Article not found !
+ */
 export const updateArticle = async (req: express.Request, res: express.Response) => {
     try {
         const {id} = req.params;

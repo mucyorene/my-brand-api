@@ -21,19 +21,19 @@ export const removeUserRoute = router.delete("/removeUser/:id", authenticatedUse
 
 //Articles endpoints
 export const createNewArticle = router.post("/my-brand/blog/create", authenticatedUser, createBlogArticle)
-export const getAllBlogArticles = router.get("/articles/getBlogs", getArticles)
+export const getAllBlogArticles = router.get("/articles", getArticles)
 export const getSingleBlogArticle = router.get("/articles/getSingleArticle/:id", getSingleBlog)
 export const remoteSingleArticle = router.delete("/articles/removeSingleArticle/:id", authenticatedUser, remoteSingleArticles)
 export const editArticle = router.put("/articles/editBlogArticle/:id", authenticatedUser, updateArticle)
 
 //Contact messages
 export const sendMessage = router.post("/contact/sendMessage", saveMessages)
-export const getContactMessages = router.get("/contact/getMessages", authenticatedUser, getAllMessages)
-export const removeContactMessage = router.get("/removeContactMessage/:id", authenticatedUser, removeMessage)
+export const getContactMessages = router.get("/contact/messages", authenticatedUser, getAllMessages)
+export const removeContactMessage = router.delete("/contact/removeContactMessage/:id", authenticatedUser, removeMessage)
 export const updateContactMessage = router.put("/contact/updateMessage/:id", authenticatedUser, updateMessageStatus)
 
 //Comments
 export const saveComment = router.post("/comments/createComments", createComments)
-export const retrieveAllComments = router.get("/comments/retrieveAllComments", getComments)
+export const retrieveAllComments = router.get("/comments", getComments)
 export const removeComments = router.delete("/comments/removeComment/:id", authenticatedUser, removeComment)
 export default router;
