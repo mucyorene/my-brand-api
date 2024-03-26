@@ -25,10 +25,13 @@ import {createUser, editUserModel, getUserByEmail, getUserById, removeUser, user
  *             properties:
  *               names:
  *                 type: string
+ *                 example: MUCYO Rene
  *               email:
  *                 type: string
+ *                 example: renemucyo1@gmail.com
  *               password:
  *                 type: string
+ *                 example: Mucyo@98765432
  *             required:
  *               - names
  *               - email
@@ -202,8 +205,10 @@ export const updateUser = async (req: express.Request, res: express.Response) =>
  *             properties:
  *               email:
  *                 type: string
+ *                 example: renemucyo1@gmail.com
  *               password:
  *                 type: string
+ *                 example: Mucyo@123456
  *             required:
  *               - email
  *               - password

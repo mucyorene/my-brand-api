@@ -21,7 +21,7 @@ export const removeUserRoute = router.delete("/removeUser/:id", authenticatedUse
 
 //Articles endpoints
 export const createNewArticle = router.post("/my-brand/blog/create", authenticatedUser, createBlogArticle)
-export const getAllBlogArticles = router.get("/articles/getBlogs", getArticles)
+export const getAllBlogArticles = router.get("/articles", getArticles)
 export const getSingleBlogArticle = router.get("/articles/getSingleArticle/:id", getSingleBlog)
 export const remoteSingleArticle = router.delete("/articles/removeSingleArticle/:id", authenticatedUser, remoteSingleArticles)
 export const editArticle = router.put("/articles/editBlogArticle/:id", authenticatedUser, updateArticle)
