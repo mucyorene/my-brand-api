@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const ArticleSchema = new mongoose.Schema({
     title: {type: String, required: true},
     body: {type: String, required: true},
-    thumbnail: {type: String}
+    thumbnail: {type: String},
+    comments: [{type: mongoose.Types.ObjectId, ref: 'Comments'}]
 })
 export const ArticleModel = mongoose.model("Articles", ArticleSchema)
 export const allBlogs = () => ArticleModel.find()
