@@ -28,8 +28,8 @@ export const editArticle = router.put("/articles/editBlogArticle/:id", authentic
 
 //Contact messages
 export const sendMessage = router.post("/contact/sendMessage", saveMessages)
-export const getContactMessages = router.get("/contact/getMessages", authenticatedUser, getAllMessages)
-export const removeContactMessage = router.get("/removeContactMessage/:id", authenticatedUser, removeMessage)
+export const getContactMessages = router.get("/contact/messages", authenticatedUser, getAllMessages)
+export const removeContactMessage = router.delete("/contact/removeContactMessage/:id", authenticatedUser, removeMessage)
 export const updateContactMessage = router.put("/contact/updateMessage/:id", authenticatedUser, updateMessageStatus)
 
 //Comments
