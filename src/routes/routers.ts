@@ -34,6 +34,6 @@ export const updateContactMessage = router.put("/contact/updateMessage/:id", aut
 
 //Comments
 export const saveComment = router.post("/comments/createComments", createComments)
-export const retrieveAllComments = router.get("/comments/retrieveAllComments", getComments)
+export const retrieveAllComments = router.get("/comments", getComments)
 export const removeComments = router.delete("/comments/removeComment/:id", authenticatedUser, removeComment)
 export default router;
