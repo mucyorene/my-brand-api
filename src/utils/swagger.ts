@@ -15,10 +15,10 @@ const options: swaggerJsDoc.Options = {
                 url: 'https://mucyorene.github.io/my-brand/',
             },
         },
-        host: "localhost:8080",
+        host: "localhost:2000",
         servers: [
             {
-                url: 'http://localhost:8080',
+                url: 'http://localhost:2000',
                 description: 'My-brand server'
             },
         ],
@@ -29,15 +29,6 @@ const options: swaggerJsDoc.Options = {
                     type: 'http',
                     scheme: 'bearer',
                 }
-            },
-            schemas: {
-                UpdateEmployeeRequest: {
-                    type: 'object',
-                    properties: {
-                        id: 0,
-                        name: 'string'
-                    }
-                }
             }
         },
     },
@@ -47,22 +38,3 @@ const options: swaggerJsDoc.Options = {
 
 const swaggerSpec = swaggerJsdoc(options);
 export default swaggerSpec
-
-//
-// const outputFile = './swagger_output.json';
-// const endpointsFiles = ['./src/routes/routers.ts'];
-//
-// swaggerAutogen({openapi: '3.0.0'})(outputFile, endpointsFiles, options);
-
-
-// function swaggerDoc(app: express.Application, port: number) {
-//     //Swagger page
-//     app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec))
-//     //Docs in JSON Format
-//     app.get('docs.json', (req: express.Request, res: express.Response) => {
-//         res.setHeader('content-Type', 'application/json')
-//         res.send(swaggerSpec)
-//     });
-// }
-//
-// export default swaggerDoc

@@ -33,7 +33,7 @@ export const removeContactMessage = router.delete("/contact/removeContactMessage
 export const updateContactMessage = router.put("/contact/updateMessage/:id", authenticatedUser, updateMessageStatus)
 
 //Comments
-export const saveComment = router.post("/comments/createComments", createComments)
+export const saveComment = router.post("/comments/createComments/:id", createComments)
 export const retrieveAllComments = router.get("/comments", getComments)
 export const removeComments = router.delete("/comments/removeComment/:id", authenticatedUser, removeComment)
 export default router;

@@ -10,9 +10,9 @@ const CommentSchema = new mongoose.Schema({
 export const CommentsModel = mongoose.model("Comments", CommentSchema)
 export const getAllComments = () => CommentsModel.find()
 export const existingComment = (content: String) => CommentsModel.findOne({content: content})
-export const createComment = (id: string, values: Record<any, any>) => new CommentsModel({
-    values,
-    id
+export const createComment = (values: Record<any, any>, id: string) => new CommentsModel({
+    ...values,
+    article: id
 }).save().then((message) => message.toObject());
 export const deleteComment = (id: string) => CommentsModel.findOneAndDelete({_id: id});
 export const getSingleComment = (id: String) => CommentsModel.findById(id)

@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import app, {servers} from "../src/server";
 import {ArticleModel} from "../src/models/article_model";
 import {CommentsModel} from "../src/models/comment_model";
+import {it} from "node:test";
 
 dotenv.config();
 
@@ -41,17 +42,35 @@ afterAll(async () => {
 
 describe("GET /api/articles/get", () => {
     it("should return all articles", async () => {
-        const articles = await request.get("/articles/getBlogs")
+        const articles = await request.get("/articles")
         expect(articles.status).toBe(200)
+    });
+});
+
+describe("GET /users", () => {
+    it("should return all users", async () => {
+        const users = await request.get("/users")
+        expect(users.status).toBe(200)
     });
 });
 
 describe("GET /articles/getSingleArticle/:id", () => {
     it("should return single article specified article", async () => {
-        console.log(articlesId)
         const res = await request.get(`/articles/getSingleArticle/${articlesId}`);
         expect(res.statusCode).toBe(200);
         expect(res.body.article).toHaveProperty("title", "Lorem test article");
     });
 });
 
+describe("POST /api/blogs", () => {
+    it("should create a new blog", async () => {
+        const newBlog = {
+            title: "New Test Blog",
+            content: "This is a new test blog",
+        };
+        const res = await request.post("/api/blogs").send(newBlog);
+        expect(res.statusCode).toBe(201);
+        expect(res.body).toHaveProperty("title", newBlog.title);
+        expect(res.body).toHaveProperty("content", newBlog.content);
+    });
+});

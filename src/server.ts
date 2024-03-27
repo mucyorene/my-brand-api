@@ -29,9 +29,9 @@ app.use(
 );
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(routers)
-export const servers = app.listen(8080, () => {
+export const servers = app.listen(2000, () => {
     connection();
     // swaggerDoc(app, 8080);
-    console.log(`APP IS RUNNING ON : 8080: http://localhost:8080/`)
+    console.log(`APP IS RUNNING ON : 2000: http://localhost:2000/`)
 })
 export default app

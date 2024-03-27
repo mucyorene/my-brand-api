@@ -1,5 +1,6 @@
 import express from "express";
-import {createComment, deleteComment, existingComment, getAllComments} from "../models/comment_model";
+import {CommentsModel, createComment, deleteComment, existingComment, getAllComments} from "../models/comment_model";
+import ArticleModel from "../models/article_model";
 
 /**
  * @swagger
@@ -7,6 +8,14 @@ import {createComment, deleteComment, existingComment, getAllComments} from "../
  *   post:
  *     summary: Create a new comment
  *     tags: [Comment]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Comment ID
+ *         schema:
+ *           type: string
+ *           example: "1234567890"  # Example comment ID
  *     requestBody:
  *       required: true
  *       content:
@@ -71,6 +80,7 @@ import {createComment, deleteComment, existingComment, getAllComments} from "../
  */
 export const createComments = async (req: express.Request, res: express.Response) => {
     try {
+        const {id} = req.params
         const {names, email, content} = req.body;
         const isExist = await existingComment(content);
 
@@ -78,13 +88,18 @@ export const createComments = async (req: express.Request, res: express.Response
             res.status(400).json({
                 status: 400,
                 message: "Your comment already sent !",
-            });
+            })
             return;
         }
         const newComment = await createComment({
             names, email, content
-        });
-        console.log(newComment)
+        }, id);
+
+        await ArticleModel.findByIdAndUpdate(
+            id,
+            {$push: {comments: newComment._id}},
+            {new: true}
+        );
         res.status(200).json({
             status: 201,
             success: true,
@@ -214,7 +229,9 @@ export const getComments = async (req: express.Request, res: express.Response) =
 export const removeComment = async (req: express.Request, res: express.Response) => {
     try {
         const {id} = req.params
+
         const del = await deleteComment(id);
+
         if (!del) {
             res.status(400).json({
                 status: 400,
@@ -222,6 +239,15 @@ export const removeComment = async (req: express.Request, res: express.Response)
             });
             return;
         }
+
+        // Delete the comment
+        await CommentsModel.findByIdAndDelete(id);
+
+        // Update the associated article's comments array
+        await ArticleModel.updateOne(
+            {_id: del.article},
+            {$pull: {comments: id}}
+        );
         return res.status(200).json({"status": 200, "message": "Comment removed successfully"}).end()
     } catch (error: any) {
         console.log(`HERE IS BLOG delete comment ERROR: ${error}`)

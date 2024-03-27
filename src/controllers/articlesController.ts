@@ -5,6 +5,7 @@ import {
     createArticles,
     deleteSingleArticle, getSingleArticle, updateBlogArticle,
 } from "../models/article_model";
+import CommentsModel from "../models/comment_model";
 
 /**
  * @swagger
@@ -105,7 +106,7 @@ export const createBlogArticle = async (req: express.Request, res: express.Respo
         const newArticle = await createArticles({
             title, body, thumbnail
         });
-        res.status(200).json({
+        res.status(201).json({
             status: 201,
             success: true,
             message: " Article created Successfully",
@@ -295,6 +296,7 @@ export const getSingleBlog = async (req: express.Request, res: express.Response)
             res.status(400).json({"status": 200,})
             return;
         }
+
         res.status(200).json({"status": 200, "message": "Article found", "article": singleArticle})
     } catch (error: any) {
         console.log(`Error on getting single article: ${error.message}`)
