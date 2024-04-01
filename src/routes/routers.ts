@@ -8,18 +8,32 @@ import {
     updateArticle
 } from "../controllers/articlesController";
 import {authenticatedUser} from "../helpers/helper";
+import {getAllMessages, removeMessage, saveMessages, updateMessageStatus} from "../controllers/blog_messages";
+import {createComments, getComments, removeComment} from "../controllers/comments_controller";
 
 const router = express.Router()
-export const getUser = router.get('/getUser', authenticatedUser, getUsers)
+export const getUser = router.get('/users', authenticatedUser, getUsers)
 export const registerUser = router.post("/auth/register", register)
 export const editBlogUser = router.put("/auth/edit/:id", authenticatedUser, updateUser)
 export const loginUser = router.post("/auth/login", login)
-export const retrieveUser = router.get("/getSingleUser/:id", authenticatedUser, retrieveSingleUser)
+export const retrieveUser = router.get("/users/:id", authenticatedUser, retrieveSingleUser)
 export const removeUserRoute = router.delete("/removeUser/:id", authenticatedUser, deleteUser)
 
 //Articles endpoints
-export const createNewArticle = router.post("/createBlogArticle", authenticatedUser, createBlogArticle)
-export const getAllBlogArticles = router.get("/articles/getBlogs", getArticles)
+export const createNewArticle = router.post("/my-brand/blog/create", authenticatedUser, createBlogArticle)
+export const getAllBlogArticles = router.get("/articles", getArticles)
 export const getSingleBlogArticle = router.get("/articles/getSingleArticle/:id", getSingleBlog)
 export const remoteSingleArticle = router.delete("/articles/removeSingleArticle/:id", authenticatedUser, remoteSingleArticles)
 export const editArticle = router.put("/articles/editBlogArticle/:id", authenticatedUser, updateArticle)
+
+//Contact messages
+export const sendMessage = router.post("/contact/sendMessage", saveMessages)
+export const getContactMessages = router.get("/contact/messages", authenticatedUser, getAllMessages)
+export const removeContactMessage = router.delete("/contact/removeContactMessage/:id", authenticatedUser, removeMessage)
+export const updateContactMessage = router.put("/contact/updateMessage/:id", authenticatedUser, updateMessageStatus)
+
+//Comments
+export const saveComment = router.post("/comments/createComments/:id", createComments)
+export const retrieveAllComments = router.get("/comments", getComments)
+export const removeComments = router.delete("/comments/removeComment/:id", authenticatedUser, removeComment)
+export default router;

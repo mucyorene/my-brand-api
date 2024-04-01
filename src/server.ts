@@ -4,17 +4,10 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import cors from "cors";
 import dotenv from "dotenv";
-import {
-    createNewArticle,
-    getAllBlogArticles,
-    getUser,
-    loginUser,
-    registerUser,
-    remoteSingleArticle, removeUserRoute,
-    retrieveUser,
-    getSingleBlogArticle, editArticle, editBlogUser
-} from "./routes/routers";
+import swaggerUi from "swagger-ui-express";
 import {connection} from "./db/connection";
+import routers from "./routes/routers";
+import swaggerSpec from "./utils/swagger";
 
 dotenv.config()
 const app: Application = express();
@@ -34,9 +27,11 @@ app.use(
         extended: true,
     })
 );
-app.listen(8080, () => {
-    connection()
-    console.log(`APP IS RUNNING ON : 8080: http://localhost:8080/`)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(routers)
+export const servers = app.listen(2000, () => {
+    connection();
+    // swaggerDoc(app, 8080);
+    console.log(`APP IS RUNNING ON : 2000: http://localhost:2000/`)
 })
-app.use(getUser, registerUser, loginUser, createNewArticle, getAllBlogArticles,
-    remoteSingleArticle, removeUserRoute, retrieveUser, getSingleBlogArticle, editArticle, editBlogUser)
+export default app
