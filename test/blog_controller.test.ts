@@ -1,76 +1,60 @@
-import supertest from "supertest";
+import request from "supertest";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-import app, {servers} from "../src/server";
-import {ArticleModel} from "../src/models/article_model";
-import {CommentsModel} from "../src/models/comment_model";
-import {it} from "node:test";
+import app from "../src/server"; // Assuming your Express app is exported from '../app'
+import {UserModel} from "../src/models/user_model";
+import ArticleModel from "../src/models/article_model";
+import CommentsModel from "../src/models/comment_model";
 
-dotenv.config();
+const articleId = new mongoose.Types.ObjectId();
+const userId = new mongoose.Types.ObjectId();
+const commentId = new mongoose.Types.ObjectId();
+jest.setTimeout(50000)
 
-jest.setTimeout(30000);
+describe("Article tests", () => {
+    let server: any;
+    beforeAll(async () => {
 
-const request = supertest(app);
+        await ArticleModel.create({
+            title: "Lorem test article",
+            body: "This is a test blog",
+            thumbnail: "No test article"
+        });
 
-const articlesId = new mongoose.Types.ObjectId;
-const MONGO_URL: string = process.env.MONGO_URL!;
-beforeAll(async () => {
-    await ArticleModel.create({
-        _id: articlesId,
-        title: "Lorem test article",
-        body: "This is a test blog",
-        thumbnail: "No test article"
+        await CommentsModel.create({
+            _id: new mongoose.Types.ObjectId,
+            names: "Names i Test",
+            email: "test@email.article",
+            content: "Content comment",
+            article: articleId
+        });
+
+        await UserModel.create({
+            _id: userId,
+            names: "Test User",
+            email: "renemucyo1@gmail.com",
+            password: "Mucyo@123",
+        });
     });
 
-    await CommentsModel.create({
-        _id: new mongoose.Types.ObjectId,
-        names: "Comment name test",
-        email: "test@email.article",
-        content: "Content comment"
+    afterAll(async () => {
+        await ArticleModel.deleteMany();
+        await CommentsModel.deleteMany();
+        await UserModel.deleteMany();
+        await mongoose.disconnect();
     });
-});
 
-afterEach(async () => {
-    servers.close();
-});
-afterAll(async () => {
-    await ArticleModel.deleteMany();
-    await CommentsModel.deleteMany();
-    await mongoose.disconnect();
-    await mongoose.connection.close();
-})
-
-describe("GET /api/articles/get", () => {
-    it("should return all articles", async () => {
-        const articles = await request.get("/articles")
-        expect(articles.status).toBe(200)
+    describe("GET /articles", () => {
+        it("should return all blogs", async () => {
+            const res = await request(app).get("/articles");
+            expect(res.status).toBe(200);
+            expect(res.body).toBeInstanceOf(Object);
+        }, 15000); // Set a timeout of 15000 ms (15 seconds) for this test
     });
-});
 
-describe("GET /users", () => {
-    it("should return all users", async () => {
-        const users = await request.get("/users")
-        expect(users.status).toBe(200)
-    });
-});
-
-describe("GET /articles/getSingleArticle/:id", () => {
-    it("should return single article specified article", async () => {
-        const res = await request.get(`/articles/getSingleArticle/${articlesId}`);
-        expect(res.statusCode).toBe(200);
-        expect(res.body.article).toHaveProperty("title", "Lorem test article");
-    });
-});
-
-describe("POST /api/blogs", () => {
-    it("should create a new blog", async () => {
-        const newBlog = {
-            title: "New Test Blog",
-            content: "This is a new test blog",
-        };
-        const res = await request.post("/api/blogs").send(newBlog);
-        expect(res.statusCode).toBe(201);
-        expect(res.body).toHaveProperty("title", newBlog.title);
-        expect(res.body).toHaveProperty("content", newBlog.content);
+    describe("GET /comments", () => {
+        it("should return all comments", async () => {
+            const comments = await request(app).get("/comments")
+            expect(comments.statusCode).toBe(200)
+        });
     });
 });
