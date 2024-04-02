@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1711977270803" clover="3.2.0">
-  <project timestamp="1711977270803" name="All files">
-    <metrics statements="113" coveredstatements="83" conditionals="3" coveredconditionals="0" methods="39" coveredmethods="9" elements="155" coveredelements="92" complexity="0" loc="113" ncloc="113" packages="4" files="7" classes="7"/>
+<coverage generated="1712083688061" clover="3.2.0">
+  <project timestamp="1712083688061" name="All files">
+    <metrics statements="65" coveredstatements="60" conditionals="0" coveredconditionals="0" methods="19" coveredmethods="8" elements="84" coveredelements="68" complexity="0" loc="65" ncloc="65" packages="4" files="5" classes="5"/>
     <package name="src">
-      <metrics statements="28" coveredstatements="27" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+      <metrics statements="28" coveredstatements="26" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="2"/>
       <file name="server.ts" path="/Users/mac/Desktop/my-brand-api/src/server.ts">
-        <metrics statements="28" coveredstatements="27" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <metrics statements="28" coveredstatements="26" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -31,57 +31,15 @@
         <line num="35" count="1" type="stmt"/>
         <line num="36" count="1" type="stmt"/>
         <line num="37" count="1" type="stmt"/>
-        <line num="38" count="1" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
         <line num="41" count="0" type="stmt"/>
         <line num="46" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="src.controllers">
-      <metrics statements="36" coveredstatements="9" conditionals="3" coveredconditionals="0" methods="6" coveredmethods="2"/>
-      <file name="comments_controller.ts" path="/Users/mac/Desktop/my-brand-api/src/controllers/comments_controller.ts">
-        <metrics statements="36" coveredstatements="9" conditionals="3" coveredconditionals="0" methods="6" coveredmethods="2"/>
-        <line num="2" count="1" type="stmt"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="81" count="1" type="stmt"/>
-        <line num="82" count="0" type="stmt"/>
-        <line num="83" count="0" type="stmt"/>
-        <line num="84" count="0" type="stmt"/>
-        <line num="85" count="0" type="stmt"/>
-        <line num="87" count="0" type="cond" truecount="0" falsecount="1"/>
-        <line num="88" count="0" type="stmt"/>
-        <line num="92" count="0" type="stmt"/>
-        <line num="94" count="0" type="stmt"/>
-        <line num="98" count="0" type="stmt"/>
-        <line num="103" count="0" type="stmt"/>
-        <line num="110" count="0" type="stmt"/>
-        <line num="111" count="0" type="stmt"/>
-        <line num="166" count="1" type="stmt"/>
-        <line num="167" count="1" type="stmt"/>
-        <line num="168" count="1" type="stmt"/>
-        <line num="169" count="1" type="cond" truecount="0" falsecount="1"/>
-        <line num="170" count="0" type="stmt"/>
-        <line num="174" count="0" type="stmt"/>
-        <line num="176" count="1" type="stmt"/>
-        <line num="178" count="0" type="stmt"/>
-        <line num="179" count="0" type="stmt"/>
-        <line num="229" count="1" type="stmt"/>
-        <line num="230" count="0" type="stmt"/>
-        <line num="231" count="0" type="stmt"/>
-        <line num="233" count="0" type="stmt"/>
-        <line num="235" count="0" type="cond" truecount="0" falsecount="1"/>
-        <line num="236" count="0" type="stmt"/>
-        <line num="240" count="0" type="stmt"/>
-        <line num="244" count="0" type="stmt"/>
-        <line num="247" count="0" type="stmt"/>
-        <line num="251" count="0" type="stmt"/>
-        <line num="253" count="0" type="stmt"/>
-        <line num="254" count="0" type="stmt"/>
-      </file>
-    </package>
     <package name="src.db">
-      <metrics statements="9" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+      <metrics statements="11" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
       <file name="connection.ts" path="/Users/mac/Desktop/my-brand-api/src/db/connection.ts">
-        <metrics statements="9" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <metrics statements="11" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
@@ -90,13 +48,15 @@
         <line num="7" count="1" type="stmt"/>
         <line num="8" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
         <line num="13" count="0" type="stmt"/>
       </file>
     </package>
     <package name="src.models">
-      <metrics statements="40" coveredstatements="39" conditionals="0" coveredconditionals="0" methods="28" coveredmethods="2"/>
+      <metrics statements="21" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="14" coveredmethods="4"/>
       <file name="article_model.ts" path="/Users/mac/Desktop/my-brand-api/src/models/article_model.ts">
-        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="1"/>
+        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="3"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
@@ -104,7 +64,7 @@
         <line num="11" count="1" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
-        <line num="14" count="1" type="stmt"/>
+        <line num="14" count="2" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
         <line num="19" count="1" type="stmt"/>
       </file>
@@ -122,30 +82,16 @@
         <line num="19" count="1" type="stmt"/>
         <line num="20" count="1" type="stmt"/>
       </file>
-      <file name="message_model.ts" path="/Users/mac/Desktop/my-brand-api/src/models/message_model.ts">
-        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="0"/>
-        <line num="1" count="1" type="stmt"/>
+    </package>
+    <package name="src.utils">
+      <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="swagger.ts" path="/Users/mac/Desktop/my-brand-api/src/utils/swagger.ts">
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
-        <line num="9" count="1" type="stmt"/>
-        <line num="10" count="1" type="stmt"/>
-        <line num="11" count="1" type="stmt"/>
-        <line num="12" count="1" type="stmt"/>
-        <line num="13" count="1" type="stmt"/>
-        <line num="14" count="1" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
-      </file>
-      <file name="user_model.ts" path="/Users/mac/Desktop/my-brand-api/src/models/user_model.ts">
-        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="0"/>
-        <line num="1" count="1" type="stmt"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="9" count="1" type="stmt"/>
-        <line num="10" count="1" type="stmt"/>
-        <line num="11" count="1" type="stmt"/>
-        <line num="13" count="1" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
-        <line num="16" count="1" type="stmt"/>
-        <line num="17" count="1" type="stmt"/>
-        <line num="18" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
       </file>
     </package>
   </project>
