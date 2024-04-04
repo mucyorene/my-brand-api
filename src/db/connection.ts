@@ -1,13 +1,15 @@
 import mongoose from "mongoose";
-import process from "process";
+import dotenv from "dotenv";
 
-export const connection = () => {
-    mongoose.Promise = Promise;
+dotenv.config();
+export const connection = async () => {
+    mongoose.Promise = global.Promise; // Set Mongoose to use global Promise
     const mongoURL: any = process.env.MONGO_URL;
-    mongoose.connect(mongoURL).then(() => {
-        console.log("Connected to the Database")
-    }).catch((error) => {
-        console.log(`ERROR HERE: ${error}`)
-    })
-    mongoose.connection.on('error', (error: Error) => console.log(error))
-}
+    try {
+        console.log("Connected to the Database");
+        await mongoose.connect(mongoURL);
+    } catch (error) {
+        console.log(`ERROR HERE: ${error}`);
+        throw error; // Re-throw the error to handle it outside this function if needed
+    }
+};

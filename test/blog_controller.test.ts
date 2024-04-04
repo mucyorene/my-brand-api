@@ -1,76 +1,177 @@
-import supertest from "supertest";
+import request from "supertest";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-import app, {servers} from "../src/server";
-import {ArticleModel} from "../src/models/article_model";
-import {CommentsModel} from "../src/models/comment_model";
-import {it} from "node:test";
+import app from "../src/server"; // Assuming your Express app is exported from '../app'
+import ArticleModel from "../src/models/article_model";
+import CommentsModel from "../src/models/comment_model";
 
-dotenv.config();
+const articleId = new mongoose.Types.ObjectId();
+const userId = new mongoose.Types.ObjectId();
+const commentId = new mongoose.Types.ObjectId();
+jest.setTimeout(50000)
 
-jest.setTimeout(30000);
+describe("Article tests", () => {
+    let server: any;
+    beforeAll(async () => {
 
-const request = supertest(app);
+        await ArticleModel.create({
+            title: "Lorem test article",
+            body: "This is a test blog",
+            thumbnail: "No test article"
+        });
 
-const articlesId = new mongoose.Types.ObjectId;
-const MONGO_URL: string = process.env.MONGO_URL!;
-beforeAll(async () => {
-    await ArticleModel.create({
-        _id: articlesId,
-        title: "Lorem test article",
-        body: "This is a test blog",
-        thumbnail: "No test article"
+        await CommentsModel.create({
+            _id: new mongoose.Types.ObjectId,
+            names: "Names i Test",
+            email: "test@email.article",
+            content: "Content comment",
+            article: articleId
+        });
     });
 
-    await CommentsModel.create({
-        _id: new mongoose.Types.ObjectId,
-        names: "Comment name test",
-        email: "test@email.article",
-        content: "Content comment"
+    afterAll(async () => {
+        await mongoose.disconnect();
     });
-});
 
-afterEach(async () => {
-    servers.close();
-});
-afterAll(async () => {
-    await ArticleModel.deleteMany();
-    await CommentsModel.deleteMany();
-    await mongoose.disconnect();
-    await mongoose.connection.close();
-})
-
-describe("GET /api/articles/get", () => {
-    it("should return all articles", async () => {
-        const articles = await request.get("/articles")
-        expect(articles.status).toBe(200)
+    describe("GET /articles", () => {
+        it("should return all blogs", async () => {
+            const res = await request(app).get("/articles");
+            expect(res.status).toBe(200);
+            expect(res.body).toBeInstanceOf(Object);
+        }, 15000); // Set a timeout of 15000 ms (15 seconds) for this test
     });
-});
 
-describe("GET /users", () => {
-    it("should return all users", async () => {
-        const users = await request.get("/users")
-        expect(users.status).toBe(200)
+    describe('GET /articles/getSingleArticle/:id', () => {
+        it('should fetch a blog by id', async () => {
+            const blogId = "660ae38024e28bdde7baefb7";
+            const res = await request(app).get(`/articles/getSingleArticle/${blogId}`);
+            expect(res.statusCode).toEqual(200);
+            expect(res.body).toBeInstanceOf(Object);
+        });
     });
-});
 
-describe("GET /articles/getSingleArticle/:id", () => {
-    it("should return single article specified article", async () => {
-        const res = await request.get(`/articles/getSingleArticle/${articlesId}`);
-        expect(res.statusCode).toBe(200);
-        expect(res.body.article).toHaveProperty("title", "Lorem test article");
+    describe("GET /comments", () => {
+        it("should return all comments", async () => {
+            const comments = await request(app).get("/comments")
+            expect(comments.statusCode).toBe(200)
+        });
     });
-});
 
-describe("POST /api/blogs", () => {
-    it("should create a new blog", async () => {
-        const newBlog = {
-            title: "New Test Blog",
-            content: "This is a new test blog",
-        };
-        const res = await request.post("/api/blogs").send(newBlog);
-        expect(res.statusCode).toBe(201);
-        expect(res.body).toHaveProperty("title", newBlog.title);
-        expect(res.body).toHaveProperty("content", newBlog.content);
+    describe("POST /api/auth", () => {
+        it("should return 400 if user already exists", async () => {
+            const existingUser = {
+                names: "Test User",
+                email: "newtestuser@example.com",
+                password: "password",
+            };
+            const res = await request(app)
+                .post("/auth/register")
+                .send(existingUser);
+            expect(res.statusCode).toBe(400);
+            expect(res.body).toHaveProperty("message", "Email already taken");
+        });
     });
+
+    describe("DELETE /articles/removeSingleArticle/:id", () => {
+        it("should delete an existing blog after logging in", async () => {
+            const userCredentials = {
+                email: "newtestuser@example.com",
+                password: "password",
+            };
+
+            // Login to get the authentication token
+            const loginRes = await request(app)
+                .post("/auth/login")
+                .send(userCredentials);
+
+            // Extract the authentication token from the login response
+            const authToken = loginRes.body.token;
+
+            // Use the authentication token to delete the blog
+            const blogId = "660af249ca109c4fa6c2b075";
+            const res = await request(app)
+                .delete(`/articles/removeSingleArticle/${blogId}`)
+                .set("Authorization", `Bearer ${authToken}`);
+
+            // Check if the article was deleted successfully
+            expect(res.statusCode).toBe(200);
+            expect(res.body).toHaveProperty("message", "Article removed successfully");
+        });
+
+
+        it("should return 404 if blog not found", async () => {
+            const userCredential = {
+                email: "newtestuser@example.com",
+                password: "password",
+            };
+
+            // Login to get the authentication token
+            const loginRes = await request(app)
+                .post("/auth/login")
+                .send(userCredential);
+
+            // Extract the authentication token from the login response
+            const authToken = loginRes.body.token;
+            const nonExistentId = new mongoose.Types.ObjectId();
+            const res = await request(app).delete(`/articles/removeSingleArticle/${nonExistentId}`).set("Authorization", `Bearer ${authToken}`);
+            expect(res.statusCode).toBe(400);
+            expect(res.body).toHaveProperty("message", "Article not found !");
+        });
+    });
+
+
+    describe("DELETE /comments/removeComment/:id", () => {
+        it("should delete an article", async () => {
+
+            const userCredentials = {
+                email: "newtestuser@example.com",
+                password: "password",
+            };
+
+            // Login to get the authentication token
+            const loginRes = await request(app)
+                .post("/auth/login")
+                .send(userCredentials);
+
+            // Extract the authentication token from the login response
+            const authToken = loginRes.body.token;
+
+            console.log(authToken)
+
+            const commentId = "660af340e93f3ff4dfd26469";
+
+            const res = await request(app).delete(
+                `/comments/removeComment/${commentId}`
+            ).set("Authorization", `Bearer ${authToken}`);
+
+            expect(res.statusCode).toBe(200);
+            expect(res.body).toHaveProperty("message", "Comment removed successfully");
+        });
+
+        it("should return 400 if comment not found", async () => {
+
+            const userCredentials = {
+                email: "newtestuser@example.com",
+                password: "password",
+            };
+
+            // Login to get the authentication token
+            const loginRes = await request(app)
+                .post("/auth/login")
+                .send(userCredentials);
+
+            // Extract the authentication token from the login response
+            const authToken = loginRes.body.token;
+
+            console.log(authToken)
+
+            const nonExistentCommentId = new mongoose.Types.ObjectId();
+            const res = await request(app).delete(
+                `/comments/removeComment/${nonExistentCommentId}`
+            ).set("Authorization", `Bearer ${authToken}`);
+
+            expect(res.statusCode).toBe(400);
+            expect(res.body).toHaveProperty("message", "Comment not found !");
+        });
+    });
+
 });

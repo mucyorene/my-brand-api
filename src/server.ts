@@ -28,10 +28,19 @@ app.use(
     })
 );
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use(routers)
-export const servers = app.listen(2000, () => {
-    connection();
-    // swaggerDoc(app, 8080);
-    console.log(`APP IS RUNNING ON : 2000: http://localhost:2000/`)
-})
+app.use(routers);
+
+
+(async () => {
+    try {
+        await connection();
+        const server = app.listen(3000, () => {
+            console.log("Server is running on port 3000");
+        });
+    } catch (error) {
+        console.log(`Error starting server: ${error}`);
+    }
+})();
+
+
 export default app
