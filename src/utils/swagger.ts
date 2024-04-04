@@ -15,10 +15,10 @@ const options: swaggerJsDoc.Options = {
                 url: 'https://mucyorene.github.io/my-brand/',
             },
         },
-        host: "localhost:3000",
+        host: "https://my-brand-api-t81n.onrender.com",
         servers: [
             {
-                url: 'http://localhost:3000',
+                url: 'https://my-brand-api-t81n.onrender.com',
                 description: 'My-brand server'
             },
         ],
