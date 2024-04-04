@@ -147,7 +147,7 @@ describe("Article tests", () => {
             expect(res.body).toHaveProperty("message", "Comment removed successfully");
         });
 
-        it("should return 404 if comment not found", async () => {
+        it("should return 400 if comment not found", async () => {
 
             const userCredentials = {
                 email: "newtestuser@example.com",
