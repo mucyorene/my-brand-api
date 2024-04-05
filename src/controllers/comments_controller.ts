@@ -4,7 +4,7 @@ import ArticleModel from "../models/article_model";
 
 /**
  * @swagger
- * /comments/createComments:
+ * /comments/createComments/{id}:
  *   post:
  *     summary: Create a new comment
  *     tags: [Comment]
