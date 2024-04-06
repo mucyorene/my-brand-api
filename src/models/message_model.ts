@@ -5,7 +5,7 @@ const MessageSchema = new mongoose.Schema({
     email: {type: String, required: true, maximum: Number},
     status: {type: String, default: "Pending"},
     message: {type: String, required: true}
-})
+}, {timestamps: true})
 export const MessageModel = mongoose.model("Messages", MessageSchema)
 export const getMessages = () => MessageModel.find()
 export const existingMessage = (message: string) => MessageModel.findOne({message: message})

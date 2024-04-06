@@ -5,7 +5,7 @@ const CommentSchema = new mongoose.Schema({
     email: {type: String, required: true, maximum: Number},
     content: {type: String, required: true},
     article: {type: mongoose.Schema.Types.ObjectId, ref: 'Articles'}
-})
+}, {timestamps: true})
 
 export const CommentsModel = mongoose.model("Comments", CommentSchema)
 export const getAllComments = () => CommentsModel.find()

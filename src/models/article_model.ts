@@ -5,7 +5,7 @@ const ArticleSchema = new mongoose.Schema({
     body: {type: String, required: true},
     thumbnail: {type: String},
     comments: [{type: mongoose.Types.ObjectId, ref: 'Comments'}]
-})
+}, {timestamps: true})
 export const ArticleModel = mongoose.model("Articles", ArticleSchema)
 export const allBlogs = () => ArticleModel.find()
 export const checkArticleExistence = (title: String) => ArticleModel.findOne({title: title});
