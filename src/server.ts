@@ -8,6 +8,7 @@ import swaggerUi from "swagger-ui-express";
 import {connection} from "./db/connection";
 import routers from "./routes/routers";
 import swaggerSpec from "./utils/swagger";
+import {v2 as cloudinary} from 'cloudinary';
 
 dotenv.config()
 const app: Application = express();
@@ -30,6 +31,12 @@ app.use(
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(routers);
 
+cloudinary.config({
+    cloud_name: 'dlk9cc42v',
+    api_key: '379388661179819',
+    api_secret: 'P_bwxCEeH3H4d78WWVnJqgpdkmA'
+});
+
 
 (async () => {
     try {
@@ -42,5 +49,9 @@ app.use(routers);
     }
 })();
 
+// Add an error handler for the express app
+app.on("error", (error) => {
+    console.error(`An error occurred on the server:\n${error}`);
+});
 
 export default app

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const ArticleSchema = new mongoose.Schema({
     title: {type: String, required: true},
     body: {type: String, required: true},
-    thumbnail: {type: String},
+    thumbnail: {type: String, required: true},
     comments: [{type: mongoose.Types.ObjectId, ref: 'Comments'}]
 }, {timestamps: true})
 export const ArticleModel = mongoose.model("Articles", ArticleSchema)

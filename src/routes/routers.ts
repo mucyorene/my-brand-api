@@ -10,6 +10,8 @@ import {
 import {authenticatedUser} from "../helpers/helper";
 import {getAllMessages, removeMessage, saveMessages, updateMessageStatus} from "../controllers/blog_messages";
 import {createComments, getComments, removeComment} from "../controllers/comments_controller";
+import upload from "../helpers/multer_middle"
+
 
 const router = express.Router()
 export const getUser = router.get('/users', authenticatedUser, getUsers)
@@ -20,7 +22,7 @@ export const retrieveUser = router.get("/users/:id", authenticatedUser, retrieve
 export const removeUserRoute = router.delete("/removeUser/:id", authenticatedUser, deleteUser)
 
 //Articles endpoints
-export const createNewArticle = router.post("/my-brand/blog/create", authenticatedUser, createBlogArticle)
+export const createNewArticle = router.post("/my-brand/blog/create", upload.single("thumbnail"), authenticatedUser, createBlogArticle)
 export const getAllBlogArticles = router.get("/articles", getArticles)
 export const getSingleBlogArticle = router.get("/articles/getSingleArticle/:id", getSingleBlog)
 export const remoteSingleArticle = router.delete("/articles/removeSingleArticle/:id", authenticatedUser, remoteSingleArticles)
