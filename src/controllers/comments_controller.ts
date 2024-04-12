@@ -4,7 +4,7 @@ import ArticleModel from "../models/article_model";
 
 /**
  * @swagger
- * /comments/createComments:
+ * /comments/createComments/{id}:
  *   post:
  *     summary: Create a new comment
  *     tags: [Comment]
@@ -100,7 +100,7 @@ export const createComments = async (req: express.Request, res: express.Response
             {$push: {comments: newComment._id}},
             {new: true}
         );
-        res.status(200).json({
+        res.status(201).json({
             status: 201,
             success: true,
             message: "Comment sent Successfully",
@@ -167,8 +167,8 @@ export const getComments = async (req: express.Request, res: express.Response) =
     try {
         const comments = await getAllComments();
         if (!comments) {
-            res.status(400).json({
-                status: 400,
+            res.status(404).json({
+                status: 404,
                 message: "No comment found !",
             });
             return;

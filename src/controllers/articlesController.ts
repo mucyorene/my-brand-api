@@ -1,4 +1,5 @@
 import express from "express";
+import cloudinary from "cloudinary";
 import {
     allBlogs,
     checkArticleExistence,
@@ -91,8 +92,13 @@ import CommentsModel from "../models/comment_model";
  */
 export const createBlogArticle = async (req: express.Request, res: express.Response) => {
     try {
-        const {title, body, thumbnail = "No Image uploaded yet"} = req.body;
+        const {title, body} = req.body;
+        const thumbnail = req.file?.path ?? ""
+        const result = await cloudinary.v2.uploader.upload(thumbnail,
+            {public_id: req.file?.originalname},
+            function (error, result) {
 
+            });
         const isExist = await checkArticleExistence(title);
 
         if (isExist) {
@@ -102,9 +108,10 @@ export const createBlogArticle = async (req: express.Request, res: express.Respo
             });
             return;
         }
+        let thumbnailUrl = result.secure_url;
 
         const newArticle = await createArticles({
-            title, body, thumbnail
+            title, body, thumbnail: thumbnailUrl
         });
         res.status(201).json({
             status: 201,
@@ -113,10 +120,9 @@ export const createBlogArticle = async (req: express.Request, res: express.Respo
             articles: newArticle,
         });
     } catch (error: any) {
-        console.log(`HERE IS BLOG REGISTER ERROR: ${error}`)
         res.status(400).json({
             status: 400,
-            message: error.message.toString(),
+            message: error.message,
         });
     }
 }
