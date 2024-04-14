@@ -97,7 +97,6 @@ export const createBlogArticle = async (req: express.Request, res: express.Respo
         const result = await cloudinary.v2.uploader.upload(thumbnail,
             {public_id: req.file?.originalname},
             function (error, result) {
-
             });
         const isExist = await checkArticleExistence(title);
 
@@ -380,6 +379,8 @@ export const updateArticle = async (req: express.Request, res: express.Response)
     try {
         const {id} = req.params;
         const {title, body} = req.body;
+        const thumbnail = req.file?.path ?? ""
+        console.log(`HERE IS THUMB: ${thumbnail}`)
         const findArticle = await getSingleArticle(id);
         if (!findArticle) {
             res.status(401).json({
@@ -388,7 +389,12 @@ export const updateArticle = async (req: express.Request, res: express.Response)
             });
             return;
         }
-        const updateArticle = await updateBlogArticle(id, {title, body})
+        const result = await cloudinary.v2.uploader.upload(thumbnail,
+            {public_id: req.file?.originalname},
+            function (error, result) {
+            });
+        let thumbnailUrl = result.secure_url;
+        const updateArticle = await updateBlogArticle(id, {title, body, thumbnail: thumbnailUrl})
         if (updateArticle) {
             res.status(200).json({
                 status: 201,

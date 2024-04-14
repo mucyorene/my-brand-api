@@ -26,7 +26,7 @@ export const createNewArticle = router.post("/my-brand/blog/create", upload.sing
 export const getAllBlogArticles = router.get("/articles", getArticles)
 export const getSingleBlogArticle = router.get("/articles/getSingleArticle/:id", getSingleBlog)
 export const remoteSingleArticle = router.delete("/articles/removeSingleArticle/:id", authenticatedUser, remoteSingleArticles)
-export const editArticle = router.put("/articles/editBlogArticle/:id", authenticatedUser, updateArticle)
+export const editArticle = router.put("/articles/editBlogArticle/:id", upload.single("thumbnail"), authenticatedUser, updateArticle)
 
 //Contact messages
 export const sendMessage = router.post("/contact/sendMessage", saveMessages)
